@@ -51,12 +51,19 @@ jobs:
             sudo ln -s ${HOME}/buck/bin/buckd /usr/bin/buckd
             buck --version
       - run:
+          name: List Build Targets with Buck
+          command: |
+            set -x
+            buck targets
+      - run:
           name: Build with Buck
           command: |
+            set -x
             buck build :mainy --verbose 1 --no-cache
       - run:
           name: Run after Buck
           command: |
+            set -x
             export PATH="$PATH:$HOME/bin"
             buck run :mainy x y z
       - store_artifacts:
@@ -122,6 +129,11 @@ jobs:
             echo "<p>Hi, <img width=16 src='img/world.svg'></p>" | sudo tee $CIRCLE_ARTIFACTS/hello.html
             sudo mkdir $CIRCLE_ARTIFACTS/img
             sudo curl "http://wikimedia.org/wikipedia/commons/e/e2/Ambox_globe.svg" -o $CIRCLE_ARTIFACTS/img/world.svg
+      - run:
+          name: List Build Targets with Buck
+          command: |
+            set -x
+            buck targets
       - run:
           name: Test using Buck with Google Test
           command: |
