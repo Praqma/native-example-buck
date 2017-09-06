@@ -45,6 +45,9 @@ cxx_test(
   srcs = [
     'testy/greety_test.cc',
   ],
+  linker_flags = [
+    '-lpthread',
+  ],
   deps = [
     '//googtest:gtest',
     ':greety',
