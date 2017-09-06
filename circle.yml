@@ -60,11 +60,10 @@ jobs:
             export PATH="$PATH:$HOME/bin"
             buck run :mainy x y z
       - store_artifacts:
-          path: bin/
-          destination: binny
+          path: buck-out/
       - store_artifacts:
-          path: lib/
-          destination: libby
+          path: buck-out/
+          destination: buckout
   test:
     docker:
       - image: circleci/openjdk:jdk
@@ -82,13 +81,6 @@ jobs:
           command: |
             set -x
             java -version
-      - run:
-          name: Setup Make Prerequisites
-          command: |
-            set -x
-            echo "Setup Make Prerequisites ..."
-            sudo apt-get install --yes build-essential
-            gcc --version
       - run:
           name: Setup CircleCI Prerequisites
           # The git openssh tar gzip ca-certificates tools required for CircleCI.
@@ -136,19 +128,10 @@ jobs:
             set -x
             buck test //:greety_test --verbose 1 --num-threads 1 --no-cache
       - store_artifacts:
-          path: bin/
+          path: buck-out/
       - store_artifacts:
-          path: bin/
-          destination: binny
-      - store_artifacts:
-          path: $(readlink bazel-bin)/mainy/*
-          destination: bazel-bin-mainy
-      - store_artifacts:
-          path: $(readlink bazel-bin)/liby/*
-          destination: bazel-bin-liby
-      - store_artifacts:
-          path: $(readlink bazel-testlogs)/testy/*
-          destination: bazel-testlogs-testy
+          path: buck-out/
+          destination: buckout
 workflows:
   version: 2
   build_and_test:
