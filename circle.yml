@@ -51,6 +51,14 @@ jobs:
             sudo ln -s ${HOME}/buck/bin/buckd /usr/bin/buckd
             buck --version
       - run:
+          name: Setup Google Test for Buck
+          command: |
+            set -x
+            echo "Setup Google Test for Buck ..."
+            git clone git@github.com:google/googletest.git googtest
+            cp bak/BAK googtest/BUCK
+            buck build //googtest:gtest
+      - run:
           name: List Build Targets with Buck
           command: |
             set -x
