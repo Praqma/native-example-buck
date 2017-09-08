@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:jdk
-    working_directory: ~/sheeeng/elpmaxe-mathy
+    working_directory: ~/sheeeng/omed-buck
     steps:
       - checkout
       - run:
@@ -72,7 +72,6 @@ jobs:
           name: Run after Buck
           command: |
             set -x
-            export PATH="$PATH:$HOME/bin"
             buck run :mainy x y z
       - store_artifacts:
           path: buck-out/
