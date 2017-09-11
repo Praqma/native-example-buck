@@ -1,6 +1,8 @@
-# Omed-Buck
+# Build with Buck
 
-Building using [Buck](https://buckbuild.com).
+[![CircleCI](https://circleci.com/gh/sheeeng/omed-buck.png?style=shield&circle-token=df3dc5f6efbc2a267f7805f05a5e91d2878be9fd)](https://circleci.com/gh/sheeeng/omed-buck)
+
+Building with [Buck](https://buckbuild.com).
 
 #### Undefined reference to `pthread_getspecific` or `pthread_setspecific` Error
 
