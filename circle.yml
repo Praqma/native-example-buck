@@ -41,16 +41,6 @@ jobs:
             git submodule init
             git submodule update
       - run:
-          name: Setup CircleCI Prerequisites
-          # The git openssh tar gzip ca-certificates tools required for CircleCI.
-          # The alpine-sdk is similar to build-essential, need to be verified whether it is needed.
-          # https://circleci.com/docs/2.0/custom-images/#adding-required-and-custom-tools-or-files
-          command: |
-            set -x
-            echo "Setup CircleCI Prerequisites ..."
-            sudo apt-get install --yes pkg-config zip g++ zlib1g-dev unzip python
-            gcc --version
-      - run:
           name: Setup Buck
           command: |
             set -x
@@ -133,16 +123,6 @@ jobs:
           command: |
             git submodule init
             git submodule update
-      - run:
-          name: Setup CircleCI Prerequisites
-          # The git openssh tar gzip ca-certificates tools required for CircleCI.
-          # The alpine-sdk is similar to build-essential, need to be verified whether it is needed.
-          # https://circleci.com/docs/2.0/custom-images/#adding-required-and-custom-tools-or-files
-          command: |
-            set -x
-            echo "Setup CircleCI Prerequisites ..."
-            sudo apt-get install --yes pkg-config zip g++ zlib1g-dev unzip python
-            gcc --version
       - run:
           name: Setup Buck
           command: |
