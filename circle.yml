@@ -81,13 +81,7 @@ jobs:
       - store_artifacts:
           path: buck-out/gen/mainy
       - store_artifacts:
-          path: buck-out/gen/*_test
-      - store_artifacts:
-          path: buck-out/gen/mainy
-          destination: buckout-gen
-      - store_artifacts:
-          path: buck-out/gen/*_test
-          destination: buckout-gen
+          path: buck-out/gen/greety_test
   test:
     docker:
       - image: circleci/openjdk:jdk
@@ -179,18 +173,9 @@ jobs:
       - store_artifacts:
           path: buck-out/gen/mainy
       - store_artifacts:
-          path: buck-out/gen/*_test
+          path: buck-out/gen/greety_test
       - store_artifacts:
-          path: buck-out/gen/*.xml
-      - store_artifacts:
-          path: buck-out/gen/mainy
-          destination: buckout-gen
-      - store_artifacts:
-          path: buck-out/gen/*_test
-          destination: buckout-gen
-      - store_artifacts:
-          path: buck-out/gen/*.xml
-          destination: buckout-gen
+          path: buck-out/gen/greety_test_test_results.xml
 workflows:
   version: 2
   build_and_test:
