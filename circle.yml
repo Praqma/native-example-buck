@@ -7,6 +7,17 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Interpolating Environment Variables to Set Other Environment Variables
+          # If you need to interpolate other environment variables to set an environment variable, the only place to do this at the moment is in bash.
+          # CircleCI 2.0 automatically sets a $BASH_ENV variable to a random name in /tmp, and will source this file for each step.
+          # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
+          command: |
+            echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+            echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
+            echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
+            echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
+            echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
+      - run:
           name: Update & Upgrade
           command: |
             set -x
@@ -25,6 +36,11 @@ jobs:
             sudo apt-get install --yes build-essential
             gcc --version
       - run:
+          name: Get Submodule(s)
+          command: |
+            git submodule init
+            git submodule update
+      - run:
           name: Setup CircleCI Prerequisites
           # The git openssh tar gzip ca-certificates tools required for CircleCI.
           # The alpine-sdk is similar to build-essential, need to be verified whether it is needed.
@@ -51,13 +67,12 @@ jobs:
             sudo ln -s ${HOME}/buck/bin/buckd /usr/bin/buckd
             buck --version
       - run:
-          name: Setup Google Test for Buck
+          name: Build Google Test
           command: |
             set -x
-            echo "Setup Google Test for Buck ..."
-            git clone git@github.com:google/googletest.git googtest
-            cp bak/BAK googtest/BUCK
-            buck build //googtest:gtest
+            echo "Build Google Test ..."
+            cp bak/BAK 3rdparty/googletest-master/BUCK
+            buck build //3rdparty/googletest-master:gtest
       - run:
           name: List Build Targets with Buck
           command: |
@@ -67,12 +82,12 @@ jobs:
           name: Build with Buck
           command: |
             set -x
-            buck build :mainy --verbose 1 --no-cache
+            buck build //:mainy --verbose 1 --no-cache
       - run:
           name: Run after Buck
           command: |
             set -x
-            buck run :mainy x y z
+            buck run //:mainy x y z --no-cache
       - store_artifacts:
           path: buck-out/
       - store_artifacts:
@@ -85,6 +100,17 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Interpolating Environment Variables to Set Other Environment Variables
+          # If you need to interpolate other environment variables to set an environment variable, the only place to do this at the moment is in bash.
+          # CircleCI 2.0 automatically sets a $BASH_ENV variable to a random name in /tmp, and will source this file for each step.
+          # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
+          command: |
+            echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+            echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
+            echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
+            echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
+            echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
+      - run:
           name: Update & Upgrade
           command: |
             set -x
@@ -95,6 +121,18 @@ jobs:
           command: |
             set -x
             java -version
+      - run:
+          name: Setup Make Prerequisites
+          command: |
+            set -x
+            echo "Setup Make Prerequisites ..."
+            sudo apt-get install --yes build-essential
+            gcc --version
+      - run:
+          name: Get Submodule(s)
+          command: |
+            git submodule init
+            git submodule update
       - run:
           name: Setup CircleCI Prerequisites
           # The git openssh tar gzip ca-certificates tools required for CircleCI.
@@ -122,13 +160,12 @@ jobs:
             sudo ln -s ${HOME}/buck/bin/buckd /usr/bin/buckd
             buck --version
       - run:
-          name: Setup Google Test for Buck
+          name: Build Google Test
           command: |
             set -x
-            echo "Setup Google Test for Buck ..."
-            git clone git@github.com:google/googletest.git googtest
-            cp bak/BAK googtest/BUCK
-            buck build //googtest:gtest
+            echo "Build Google Test ..."
+            cp bak/BAK 3rdparty/googletest-master/BUCK
+            buck build //3rdparty/googletest-master:gtest
       - run:
           name: Artifact
           shell: /bin/sh
@@ -145,7 +182,16 @@ jobs:
           name: Test using Buck with Google Test
           command: |
             set -x
-            buck test //:greety_test --verbose 1 --num-threads 1 --no-cache
+            mkdir -p ${GTEST_DIR}/build/test-results
+            buck test //:greety_test --verbose 1 --num-threads 1 --no-cache --gtest_output=xml:${GTEST_DIR}/build/test-results/greety_test_test_results.xml
+      - store_artifacts:
+          path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/
+      - store_artifacts:
+          path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/
+          destination: googletest-build
+      - store_artifacts:
+          path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/test-results/
+          destination: googletest-build-testresults
       - store_artifacts:
           path: buck-out/
       - store_artifacts:
