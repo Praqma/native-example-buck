@@ -79,10 +79,15 @@ jobs:
             set -x
             buck run //:mainy x y z --no-cache
       - store_artifacts:
-          path: buck-out/
+          path: buck-out/gen/mainy
       - store_artifacts:
-          path: buck-out/
-          destination: buckout
+          path: buck-out/gen/*_test
+      - store_artifacts:
+          path: buck-out/gen/mainy
+          destination: buckout-gen
+      - store_artifacts:
+          path: buck-out/gen/*_test
+          destination: buckout-gen
   test:
     docker:
       - image: circleci/openjdk:jdk
@@ -162,8 +167,7 @@ jobs:
           name: Test using Buck with Google Test
           command: |
             set -x
-            mkdir -p ${GTEST_DIR}/build/test-results
-            buck test //:greety_test --verbose 1 --num-threads 1 --no-cache --gtest_output=xml:${GTEST_DIR}/build/test-results/greety_test_test_results.xml
+            buck test //:greety_test --verbose 1 --num-threads 1 --no-cache --xml ./buck-out/gen/greety_test_test_results.xml
       - store_artifacts:
           path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/
       - store_artifacts:
@@ -173,10 +177,20 @@ jobs:
           path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/test-results/
           destination: googletest-build-testresults
       - store_artifacts:
-          path: buck-out/
+          path: buck-out/gen/mainy
       - store_artifacts:
-          path: buck-out/
-          destination: buckout
+          path: buck-out/gen/*_test
+      - store_artifacts:
+          path: buck-out/gen/*.xml
+      - store_artifacts:
+          path: buck-out/gen/mainy
+          destination: buckout-gen
+      - store_artifacts:
+          path: buck-out/gen/*_test
+          destination: buckout-gen
+      - store_artifacts:
+          path: buck-out/gen/*.xml
+          destination: buckout-gen
 workflows:
   version: 2
   build_and_test:
