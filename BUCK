@@ -49,7 +49,7 @@ cxx_test(
     '-lpthread',
   ],
   deps = [
-    '//googtest:gtest',
+    '//3rdparty/googletest-master:gtest',
     ':greety',
   ],
 )
