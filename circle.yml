@@ -17,7 +17,7 @@ jobs:
             echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
             echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
             echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
-            echo 'export BUCK_DIR=${PWD}/buck-master' >> $BASH_ENV
+            echo 'export BUCK_DIR=${THIRDPARTY_DIR}/buck-master' >> $BASH_ENV
       - run:
           name: Update & Upgrade
           command: |
@@ -67,7 +67,7 @@ jobs:
           name: List Build Targets with Buck
           command: |
             set -x
-            buck targets
+            # buck targets
       - run:
           name: Build with Buck
           command: |
@@ -99,7 +99,7 @@ jobs:
             echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
             echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
             echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
-            echo 'export BUCK_DIR=${PWD}/buck-master' >> $BASH_ENV
+            echo 'export BUCK_DIR=${THIRDPARTY_DIR}/buck-master' >> $BASH_ENV
       - run:
           name: Update & Upgrade
           command: |

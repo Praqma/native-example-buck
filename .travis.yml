@@ -42,7 +42,7 @@ script:
   - cp bak/BAK ${GOOGLETEST_DIR}/BUCK
   - buck build //3rdparty/googletest-master:gtest
   -
-  - buck targets
+  # - buck targets
   - buck build //:mainy --verbose 1 --no-cache
   - buck run //:mainy x y z --no-cache
   -
