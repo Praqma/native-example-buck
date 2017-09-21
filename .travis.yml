@@ -19,3 +19,13 @@ script:
   - gcc --version
   - ant -version
   - python --version
+
+script:
+  - cp bak/BAK ${GOOGLETEST_DIR}/BUCK
+  - buck build //3rdparty/googletest-master:gtest
+
+script:
+  - buck targets
+  - buck build //:mainy --verbose 1 --no-cache
+  - buck run //:mainy x y z --no-cache
+  - buck test //:greety_test --verbose 1 --num-threads 1 --no-cache
