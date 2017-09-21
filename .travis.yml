@@ -76,6 +76,9 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-6
+      before_script:
+        - sudo ln -sf /usr/bin/gcc-6 /usr/bin/gcc
+        - gcc --version
       env: COMPILER=gcc-6
     - compiler: gcc
       addons:
@@ -84,6 +87,9 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
+      before_script:
+        - sudo ln -sf /usr/bin/g++-6 /usr/bin/g++
+        - g++ --version
       env: COMPILER=g++-6
 script:
   - clang --version
