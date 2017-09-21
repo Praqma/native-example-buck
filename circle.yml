@@ -133,7 +133,7 @@ jobs:
             time ant
             # echo "That said, as a sanity check, Buck is capable of building itself. Once you build Buck using Ant, you can re-build Buck using Buck by running ./bin/buck build buck."
             # echo "https://buckbuild.com/concept/faq.html"
-            # time bin/buck build buck --verbose 1 --no-cache
+            time buck build //programs:buck //programs:buckd --verbose 1 --no-cache
             cd -
             sudo ln -s ${BUCK_DIR}/bin/buck /usr/local/bin/buck
             sudo ln -s ${BUCK_DIR}/bin/buckd /usr/local/bin/buckd
