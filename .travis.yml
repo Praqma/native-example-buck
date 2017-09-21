@@ -4,8 +4,6 @@ sudo: false
 compiler:
   - clang
   - gcc
-install:
-  - export CXX="g++-5"
 addons:
   apt:
     sources:
@@ -26,7 +24,8 @@ before_install:
   - export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master
   - export GTEST_DIR=${GOOGLETEST_DIR}/googletest
   - export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock
-  - export BUCK_DIR=${PWD}/buck-master
+  - export BUCK_DIR=${THIRDPARTY_DIR}/buck-master
+install:
   - export CXX="g++-5"
 
 script:
