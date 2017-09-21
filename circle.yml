@@ -17,6 +17,7 @@ jobs:
             echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
             echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
             echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
+            echo 'export BUCK_DIR=${THIRDPARTY_DIR}/buck-master' >> $BASH_ENV
       - run:
           name: Update & Upgrade
           command: |
@@ -46,15 +47,14 @@ jobs:
             set -x
             echo "Setup Buck ..."
             sudo apt-get install --yes default-jdk ant python git
-            git clone https://github.com/facebook/buck.git ${HOME}/buck
-            cd ~/buck
+            cd ${BUCK_DIR}
             time ant
             # echo "That said, as a sanity check, Buck is capable of building itself. Once you build Buck using Ant, you can re-build Buck using Buck by running ./bin/buck build buck."
             # echo "https://buckbuild.com/concept/faq.html"
             # time bin/buck build buck --verbose 1 --no-cache
             cd -
-            sudo ln -s ${HOME}/buck/bin/buck /usr/bin/buck
-            sudo ln -s ${HOME}/buck/bin/buckd /usr/bin/buckd
+            sudo ln -s ${BUCK_DIR}/bin/buck /usr/bin/buck
+            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/bin/buckd
             buck --version
       - run:
           name: Build Google Test
@@ -99,6 +99,7 @@ jobs:
             echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
             echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
             echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
+            echo 'export BUCK_DIR=${THIRDPARTY_DIR}/buck-master' >> $BASH_ENV
       - run:
           name: Update & Upgrade
           command: |
@@ -128,15 +129,14 @@ jobs:
             set -x
             echo "Setup Buck ..."
             sudo apt-get install --yes default-jdk ant python git
-            git clone https://github.com/facebook/buck.git ${HOME}/buck
-            cd ~/buck
+            cd ${BUCK_DIR}
             time ant
             # echo "That said, as a sanity check, Buck is capable of building itself. Once you build Buck using Ant, you can re-build Buck using Buck by running ./bin/buck build buck."
             # echo "https://buckbuild.com/concept/faq.html"
             # time bin/buck build buck --verbose 1 --no-cache
             cd -
-            sudo ln -s ${HOME}/buck/bin/buck /usr/bin/buck
-            sudo ln -s ${HOME}/buck/bin/buckd /usr/bin/buckd
+            sudo ln -s ${BUCK_DIR}/bin/buck /usr/bin/buck
+            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/bin/buckd
             buck --version
       - run:
           name: Build Google Test
