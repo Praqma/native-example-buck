@@ -1,15 +1,22 @@
-language: cpp
+sudo: required
 dist: trusty
-sudo: false
+language: cpp
 compiler:
   - clang
   - gcc
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test  # newer gcc than precise supported.
+    # add PPAs with more up-to-date toolchains
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
     packages:
-      - g++-5
+    # install toolchains
+    - gcc-5
+    - g++-5
+    - clang-3.6
+    packages:
+    - g++-5
 notifications:
   email:
     on_success: change # default: change
@@ -25,8 +32,43 @@ before_install:
   - export GTEST_DIR=${GOOGLETEST_DIR}/googletest
   - export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock
   - export BUCK_DIR=${THIRDPARTY_DIR}/buck-master
-install:
-  - export CXX="g++-5"
+
+matrix:
+  include:
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+      env: COMPILER=g++-4.9
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env: COMPILER=g++-5
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+          packages:
+            - clang-3.6
+      env: COMPILER=clang++-3.6
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+      env: COMPILER=clang++-3.7
 
 script:
   - clang --version
