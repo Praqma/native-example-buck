@@ -20,7 +20,7 @@ cxx_library(
   ],
   compiler_flags = [
     '-std=c++14',
-    '-pthread',
+    '-lpthread',
   ],
   visibility = [
     'PUBLIC',
