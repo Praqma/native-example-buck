@@ -4,6 +4,11 @@ compiler:
   - clang
   - gcc
 
+notifications:
+  email:
+    on_success: change # default: change
+    on_failure: change # default: always
+
 before_install:
   - sudo apt-get update --quiet
   - sudo apt-get install --yes build-essential
@@ -20,8 +25,7 @@ script:
   - gcc --version
   - ant -version
   - python --version
-
-script:
+  -
   - cd ${BUCK_DIR}
   - time ant
   - cd -
