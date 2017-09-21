@@ -1,9 +1,17 @@
 language: cpp
-
+dist: trusty
+sudo: false
 compiler:
   - clang
   - gcc
-
+install:
+  - export CXX="g++-5"
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test  # newer gcc than precise supported.
+    packages:
+      - g++-5
 notifications:
   email:
     on_success: change # default: change
