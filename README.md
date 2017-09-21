@@ -4,6 +4,34 @@
 
 Building with [Buck](https://buckbuild.com).
 
+
+## The `Buck wasn't able to parse` Error
+
+The `buck targets` from the your current folder will fail, if source code of buck is located under a subdirectory without a BUCK file.
+
+```
+./
+├── 3rdparty
+│   ├── buck-master
+│   └── googletest-master
+```
+
+* Error
+
+```
+Buck wasn't able to parse /home/circleci/omed-buck/3rdparty/buck-master/programs/BUCK:
+IOError: [Errno 2] No such file or directory: '/home/circleci/omed-buck/programs/macro_defs'
+```
+
+* Workaround
+
+```
+./
+├── 3rdparty
+│   └── googletest-master
+└── buck-master
+```
+
 #### Undefined reference to `pthread_getspecific` or `pthread_setspecific` Error
 
 ```
