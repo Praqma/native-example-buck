@@ -53,8 +53,8 @@ jobs:
             # echo "https://buckbuild.com/concept/faq.html"
             # time bin/buck build buck --verbose 1 --no-cache
             cd -
-            sudo ln -s ${BUCK_DIR}/bin/buck /usr/bin/buck
-            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/bin/buckd
+            sudo ln -s ${BUCK_DIR}/bin/buck /usr/local/bin/buck
+            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/local/bin/buckd
             buck --version
       - run:
           name: Build Google Test
@@ -135,8 +135,8 @@ jobs:
             # echo "https://buckbuild.com/concept/faq.html"
             # time bin/buck build buck --verbose 1 --no-cache
             cd -
-            sudo ln -s ${BUCK_DIR}/bin/buck /usr/bin/buck
-            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/bin/buckd
+            sudo ln -s ${BUCK_DIR}/bin/buck /usr/local/bin/buck
+            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/local/bin/buckd
             buck --version
       - run:
           name: Build Google Test

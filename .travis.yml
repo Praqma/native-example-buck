@@ -13,6 +13,7 @@ before_install:
   - export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master
   - export GTEST_DIR=${GOOGLETEST_DIR}/googletest
   - export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock
+  - export BUCK_DIR=${THIRDPARTY_DIR}/buck-master
 
 script:
   - clang --version
@@ -21,11 +22,18 @@ script:
   - python --version
 
 script:
+  - cd ${BUCK_DIR}
+  - time ant
+  - cd -
+  - sudo ln -s ${BUCK_DIR}/bin/buck /usr/local/bin/buck
+  - sudo ln -s ${BUCK_DIR}/bin/buckd /usr/local/bin/buckd
+  - buck --version
+  -
   - cp bak/BAK ${GOOGLETEST_DIR}/BUCK
   - buck build //3rdparty/googletest-master:gtest
-
-script:
+  -
   - buck targets
   - buck build //:mainy --verbose 1 --no-cache
   - buck run //:mainy x y z --no-cache
+  -
   - buck test //:greety_test --verbose 1 --num-threads 1 --no-cache
