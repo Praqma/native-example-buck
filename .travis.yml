@@ -24,7 +24,7 @@ notifications:
 
 before_install:
   - sudo apt-get update --quiet
-  - sudo apt-get install --yes build-essential
+  # - sudo apt-get install --yes build-essential
   - sudo apt-get install --yes ant python
   - export DEBIAN_FRONTEND=noninteractive
   - export THIRDPARTY_DIR=${PWD}/3rdparty
@@ -79,6 +79,7 @@ matrix:
       before_script:
         - sudo ln -sf /usr/bin/gcc-6 /usr/bin/gcc
         - gcc --version
+        - g++ --version
       env: COMPILER=gcc-6
     - compiler: gcc
       addons:
@@ -89,6 +90,7 @@ matrix:
             - g++-6
       before_script:
         - sudo ln -sf /usr/bin/g++-6 /usr/bin/g++
+        - gcc --version
         - g++ --version
       env: COMPILER=g++-6
 script:
