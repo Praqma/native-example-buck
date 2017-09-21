@@ -156,7 +156,7 @@ jobs:
           name: List Build Targets with Buck
           command: |
             set -x
-            buck targets
+            # buck targets
       - run:
           name: Test using Buck with Google Test
           command: |
