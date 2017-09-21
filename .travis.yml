@@ -69,7 +69,15 @@ matrix:
           packages:
             - clang-3.7
       env: COMPILER=clang++-3.7
-
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-7
+            - g++-7
+      env: COMPILER=g++-7
 script:
   - clang --version
   - gcc --version
