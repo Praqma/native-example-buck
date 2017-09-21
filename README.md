@@ -7,7 +7,17 @@ Building with [Buck](https://buckbuild.com).
 
 ## The `g++: error: unrecognized command line option ‘-std=c++14’` Error
 
+Under Travis CI, you get this error.
 
+* Error
+
+```
+`g++: error: unrecognized command line option ‘-std=c++14’`
+```
+
+* Workaround
+
+Add `export CXX="g++-5"` under `before_install` to fix this issue.
 
 ## The `Buck wasn't able to parse` Error
 
