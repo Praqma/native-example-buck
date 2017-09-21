@@ -67,7 +67,7 @@ jobs:
           name: List Build Targets with Buck
           command: |
             set -x
-            buck targets
+            # buck targets
       - run:
           name: Build with Buck
           command: |
