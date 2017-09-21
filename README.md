@@ -5,6 +5,10 @@
 Building with [Buck](https://buckbuild.com).
 
 
+## The `g++: error: unrecognized command line option ‘-std=c++14’` Error
+
+
+
 ## The `Buck wasn't able to parse` Error
 
 The `buck targets` from the your current folder will fail, if source code of buck is located under a subdirectory without a BUCK file.
