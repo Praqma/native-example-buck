@@ -1,0 +1,21 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+before_install:
+  - sudo apt-get update --quiet
+  - sudo apt-get install --yes build-essential
+  - sudo apt-get install --yes ant python
+  - export DEBIAN_FRONTEND=noninteractive
+  - export THIRDPARTY_DIR=${PWD}/3rdparty
+  - export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master
+  - export GTEST_DIR=${GOOGLETEST_DIR}/googletest
+  - export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock
+
+script:
+  - clang --version
+  - gcc --version
+  - ant -version
+  - python --version
