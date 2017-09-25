@@ -17,9 +17,10 @@ language: cpp
 #     - clang-3.6
 #     packages:
 #     - g++-5
+
 notifications:
   email:
-    on_success: change # default: change
+    on_success: never # default: change
     on_failure: change # default: always
 
 before_install:
