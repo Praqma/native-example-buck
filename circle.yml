@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:jdk
-    working_directory: ~/sheeeng/omed-buck
+    working_directory: ~/praqma/native-example-buck
     steps:
       - checkout
       - run:
@@ -85,7 +85,7 @@ jobs:
   test:
     docker:
       - image: circleci/openjdk:jdk
-    working_directory: ~/sheeeng/omed-buck
+    working_directory: ~/praqma/native-example-buck
     steps:
       - checkout
       - run:
