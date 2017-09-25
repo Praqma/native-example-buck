@@ -23,7 +23,9 @@ See [native](https://github.com/Praqma/native) repository for more examples.
 [![GitHub Releases](https://img.shields.io/github/release/praqma/native-example-buck.svg)](https://img.shields.io/github/release/praqma/native-example-buck.svg)
 [![GitHub Issues](https://img.shields.io/github/issues/praqma/native-example-buck.svg)](https://img.shields.io/github/issues/praqma/native-example-buck.svg) -->
 
-## The `g++: error: unrecognized command line option ‘-std=c++14’` Error
+## Lesson Learned
+
+### The `g++: error: unrecognized command line option ‘-std=c++14’` Error
 
 Under Travis CI, you get this error.
 
@@ -37,7 +39,7 @@ Under Travis CI, you get this error.
 
 Add `export CXX="g++-5"` under `before_install` to fix this issue.
 
-## The `Buck wasn't able to parse` Error
+### The `Buck wasn't able to parse` Error
 
 The `buck targets` from the your current folder will fail, if source code of buck is located under a subdirectory without a BUCK file.
 
@@ -64,7 +66,7 @@ IOError: [Errno 2] No such file or directory: '/home/circleci/omed-buck/programs
 └── buck-master
 ```
 
-#### Undefined reference to `pthread_getspecific` or `pthread_setspecific` Error
+### Undefined reference to `pthread_getspecific` or `pthread_setspecific` Error
 
 ```
 $ buck test //:greety_test --verbose 1 --num-threads 1 --no-cache
