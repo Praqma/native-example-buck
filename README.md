@@ -14,32 +14,23 @@ Building with [Buck](https://buckbuild.com).
 
 See [native](https://github.com/Praqma/native) repository for more examples.
 
-<!-- GitHub
-
-[![GitHub Stars](https://img.shields.io/github/stars/praqma/native-example-buck.svg?style=social&label=Star)](https://img.shields.io/github/stars/praqma/native-example-buck.svg?style=social&label=Star)
-[![GitHub Forks](https://img.shields.io/github/forks/praqma/native-example-buck.svg?style=social&label=Fork)](https://img.shields.io/github/forks/praqma/native-example-buck.svg?style=social&label=Fork)
-[![GitHub Watchers](https://img.shields.io/github/watchers/praqma/native-example-buck.svg?style=social&label=Watch)](https://img.shields.io/github/watchers/praqma/native-example-buck.svg?style=social&label=Watch)
-[![GitHub Tags](https://img.shields.io/github/tag/praqma/native-example-buck.svg)](https://img.shields.io/github/tag/praqma/native-example-buck.svg)
-[![GitHub Releases](https://img.shields.io/github/release/praqma/native-example-buck.svg)](https://img.shields.io/github/release/praqma/native-example-buck.svg)
-[![GitHub Issues](https://img.shields.io/github/issues/praqma/native-example-buck.svg)](https://img.shields.io/github/issues/praqma/native-example-buck.svg) -->
-
 ## Lesson Learned
 
-### The `g++: error: unrecognized command line option ‘-std=c++14’` Error
+* The `g++: error: unrecognized command line option ‘-std=c++14’` Error
 
 Under Travis CI, you get this error.
 
-* Error
+Error:
 
 ```
 `g++: error: unrecognized command line option ‘-std=c++14’`
 ```
 
-* Workaround
+Workaround:
 
 Add `export CXX="g++-5"` under `before_install` to fix this issue.
 
-### The `Buck wasn't able to parse` Error
+* The `Buck wasn't able to parse` Error
 
 The `buck targets` from the your current folder will fail, if source code of buck is located under a subdirectory without a BUCK file.
 
@@ -50,14 +41,14 @@ The `buck targets` from the your current folder will fail, if source code of buc
 │   └── googletest-master
 ```
 
-* Error
+Error:
 
 ```
 Buck wasn't able to parse /home/circleci/omed-buck/3rdparty/buck-master/programs/BUCK:
 IOError: [Errno 2] No such file or directory: '/home/circleci/omed-buck/programs/macro_defs'
 ```
 
-* Workaround
+Workaround:
 
 ```
 ./
@@ -66,7 +57,7 @@ IOError: [Errno 2] No such file or directory: '/home/circleci/omed-buck/programs
 └── buck-master
 ```
 
-### Undefined reference to `pthread_getspecific` or `pthread_setspecific` Error
+* Undefined reference to `pthread_getspecific` or `pthread_setspecific` Error
 
 ```
 $ buck test //:greety_test --verbose 1 --num-threads 1 --no-cache
