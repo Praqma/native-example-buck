@@ -32,9 +32,9 @@ jobs:
             set -x
             cd ${WORKSPACE_DIR}
             bash ${PWD}/build.sh
-      - store_artifacts:
-          path: 
-          destination: 
+      # - store_artifacts:
+      #     path: 
+      #     destination: 
   test:
     docker:
       - image: praqma/native-buck:latest
