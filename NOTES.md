@@ -2,7 +2,8 @@
 
 ## Steps
 
-  * Build image locally: `./docker-build.sh`
+* Build image locally: `./docker-build.sh`
+
 ## Lesson Learned
 
 * The `g++: error: unrecognized command line option ‘-std=c++14’` Error
