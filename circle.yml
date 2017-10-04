@@ -2,8 +2,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:jdk
-    working_directory: ~/praqma/native-example-buck
+      - image: praqma/native-buck:latest
+    working_directory: /workspace
     steps:
       - checkout
       - run:
@@ -13,79 +13,32 @@ jobs:
           # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+            echo 'export WORKSPACE_DIR=/workspace' >> $BASH_ENV
             echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
             echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
-            echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
-            echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
-            echo 'export BUCK_DIR=${THIRDPARTY_DIR}/buck-master' >> $BASH_ENV
       - run:
-          name: Update & Upgrade
+          name: Version
           command: |
             set -x
-            sudo apt-get update
-            sudo apt-get upgrade
+            cat /etc/*release
       - run:
-          name: Check Version
+          name: Setup Google Test with Buck
+          command: |
+            git submodule update --init
+            cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
+      - run:
+          name: Build
           command: |
             set -x
-            java -version
-      - run:
-          name: Setup Make Prerequisites
-          command: |
-            set -x
-            echo "Setup Make Prerequisites ..."
-            sudo apt-get install --yes build-essential
-            gcc --version
-      - run:
-          name: Get Submodule(s)
-          command: |
-            git submodule init
-            git submodule update
-      - run:
-          name: Setup Buck
-          command: |
-            set -x
-            echo "Setup Buck ..."
-            sudo apt-get install --yes default-jdk ant python git
-            cd ${BUCK_DIR}
-            time ant
-            # echo "That said, as a sanity check, Buck is capable of building itself. Once you build Buck using Ant, you can re-build Buck using Buck by running ./bin/buck build buck."
-            # echo "https://buckbuild.com/concept/faq.html"
-            # time bin/buck build buck --verbose 1 --no-cache
-            cd -
-            sudo ln -s ${BUCK_DIR}/bin/buck /usr/local/bin/buck
-            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/local/bin/buckd
-            buck --version
-      - run:
-          name: Build Google Test
-          command: |
-            set -x
-            echo "Build Google Test ..."
-            cp bak/BAK 3rdparty/googletest-master/BUCK
-            buck build //3rdparty/googletest-master:gtest
-      - run:
-          name: List Build Targets with Buck
-          command: |
-            set -x
-            # buck targets
-      - run:
-          name: Build with Buck
-          command: |
-            set -x
-            buck build //:mainy --verbose 1 --no-cache
-      - run:
-          name: Run after Buck
-          command: |
-            set -x
-            buck run //:mainy x y z --no-cache
+            cd ${WORKSPACE_DIR}
+            bash ${PWD}/build.sh
       - store_artifacts:
-          path: buck-out/gen/mainy
-      - store_artifacts:
-          path: buck-out/gen/greety_test
+          path: 
+          destination: 
   test:
     docker:
-      - image: circleci/openjdk:jdk
-    working_directory: ~/praqma/native-example-buck
+      - image: praqma/native-buck:latest
+    working_directory: /workspace
     steps:
       - checkout
       - run:
@@ -95,87 +48,25 @@ jobs:
           # https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
+            echo 'export WORKSPACE_DIR=/workspace' >> $BASH_ENV
             echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
             echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
-            echo 'export GTEST_DIR=${GOOGLETEST_DIR}/googletest' >> $BASH_ENV
-            echo 'export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock' >> $BASH_ENV
-            echo 'export BUCK_DIR=${THIRDPARTY_DIR}/buck-master' >> $BASH_ENV
-      - run:
-          name: Update & Upgrade
-          command: |
-            set -x
-            sudo apt-get update
-            sudo apt-get upgrade
       - run:
           name: Check Version
           command: |
             set -x
-            java -version
+            cat /etc/*release
       - run:
-          name: Setup Make Prerequisites
+          name: Setup Google Test with Buck
+          command: |
+            git submodule update --init
+            cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
+      - run:
+          name: Test
           command: |
             set -x
-            echo "Setup Make Prerequisites ..."
-            sudo apt-get install --yes build-essential
-            gcc --version
-      - run:
-          name: Get Submodule(s)
-          command: |
-            git submodule init
-            git submodule update
-      - run:
-          name: Setup Buck
-          command: |
-            set -x
-            echo "Setup Buck ..."
-            sudo apt-get install --yes default-jdk ant python git
-            cd ${BUCK_DIR}
-            time ant
-            # echo "That said, as a sanity check, Buck is capable of building itself. Once you build Buck using Ant, you can re-build Buck using Buck by running ./bin/buck build buck."
-            # echo "https://buckbuild.com/concept/faq.html"
-            # time buck build //programs:buck //programs:buckd --verbose 1 --no-cache
-            cd -
-            sudo ln -s ${BUCK_DIR}/bin/buck /usr/local/bin/buck
-            sudo ln -s ${BUCK_DIR}/bin/buckd /usr/local/bin/buckd
-            buck --version
-      - run:
-          name: Build Google Test
-          command: |
-            set -x
-            echo "Build Google Test ..."
-            cp bak/BAK 3rdparty/googletest-master/BUCK
-            buck build //3rdparty/googletest-master:gtest
-      - run:
-          name: Artifact
-          shell: /bin/sh
-          command: | # shorthanded command can also have multiple lines
-            echo "<p>Hi, <img width=16 src='img/world.svg'></p>" | sudo tee $CIRCLE_ARTIFACTS/hello.html
-            sudo mkdir $CIRCLE_ARTIFACTS/img
-            sudo curl "http://wikimedia.org/wikipedia/commons/e/e2/Ambox_globe.svg" -o $CIRCLE_ARTIFACTS/img/world.svg
-      - run:
-          name: List Build Targets with Buck
-          command: |
-            set -x
-            # buck targets
-      - run:
-          name: Test using Buck with Google Test
-          command: |
-            set -x
-            buck test //:greety_test --verbose 1 --num-threads 1 --no-cache --xml ./buck-out/gen/greety_test_test_results.xml
-      - store_artifacts:
-          path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/
-      - store_artifacts:
-          path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/
-          destination: googletest-build
-      - store_artifacts:
-          path: ~/sheeeng/omed-buck/3rdparty/googletest-master/googletest/build/test-results/
-          destination: googletest-build-testresults
-      - store_artifacts:
-          path: buck-out/gen/mainy
-      - store_artifacts:
-          path: buck-out/gen/greety_test
-      - store_artifacts:
-          path: buck-out/gen/greety_test_test_results.xml
+            cd ${WORKSPACE_DIR}
+            bash ${PWD}/test.sh
 workflows:
   version: 2
   build_and_test:

@@ -1,22 +1,13 @@
 sudo: required
-dist: trusty
+
+services:
+  - docker
+
 language: cpp
-# compiler:
-#   - clang
-#   - gcc
-# addons:
-#   apt:
-#     sources:
-#     # add PPAs with more up-to-date toolchains
-#     - ubuntu-toolchain-r-test
-#     - llvm-toolchain-precise-3.6
-#     packages:
-#     # install toolchains
-#     - gcc-5
-#     - g++-5
-#     - clang-3.6
-#     packages:
-#     - g++-5
+
+compiler:
+  - clang
+  - gcc
 
 notifications:
   email:
@@ -24,100 +15,13 @@ notifications:
     on_failure: change # default: always
 
 before_install:
-  - sudo apt-get update --quiet
-  - sudo apt-get install --yes build-essential
-  - sudo apt-get install --yes ant python
-  - export DEBIAN_FRONTEND=noninteractive
+  - git submodule update --init
+  - docker pull praqma/native-buck:latest
   - export THIRDPARTY_DIR=${PWD}/3rdparty
   - export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master
-  - export GTEST_DIR=${GOOGLETEST_DIR}/googletest
-  - export GMOCK_DIR=${GOOGLETEST_DIR}/googlemock
-  - export BUCK_DIR=${THIRDPARTY_DIR}/buck-master
+  - cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
 
-matrix:
-  include:
-    # - compiler: gcc
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #       packages:
-    #         - g++-4.9
-    #   env: COMPILER=g++-4.9
-    # - compiler: gcc
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #       packages:
-    #         - g++-5
-    #   env: COMPILER=g++-5
-    # - compiler: clang
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #         - llvm-toolchain-precise-3.6
-    #       packages:
-    #         - clang-3.6
-    #   env: COMPILER=clang++-3.6
-    # - compiler: clang
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #         - llvm-toolchain-precise-3.7
-    #       packages:
-    #         - clang-3.7
-    #   env: COMPILER=clang++-3.7
-    # - compiler: gcc
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #       packages:
-    #         - gcc-6
-    #   before_script:
-    #     - sudo ln -sf /usr/bin/gcc-6 /usr/bin/gcc
-    #     - gcc --version
-    #   env: COMPILER=gcc-6
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-6
-            - g++-6
-      before_script:
-        - sudo ln -sf /usr/bin/gcc-6 /usr/bin/gcc
-        - sudo ln -sf /usr/bin/g++-6 /usr/bin/g++
-        - gcc --version
-        - g++ --version
-      env: COMPILER=g++-6
 script:
-  - clang --version
-  - gcc --version
-  - ant -version
-  - python --version
-  -
-  - cd ${BUCK_DIR}
-  - time ant
-  - sudo ln -s ${BUCK_DIR}/bin/buck /usr/local/bin/buck
-  - sudo ln -s ${BUCK_DIR}/bin/buckd /usr/local/bin/buckd
-  - buck --version
-  # - echo "That said, as a sanity check, Buck is capable of building itself. Once you build Buck using Ant, you can re-build Buck using Buck by running ./bin/buck build buck."
-  # - echo "https://buckbuild.com/concept/faq.html"
-  # - buck targets
-  # - time buck build //programs:buck //programs:buckd --verbose 1 --no-cache
-  # - buck --version
-  - cd -
-  -
-  - cp bak/BAK ${GOOGLETEST_DIR}/BUCK
-  - buck build //3rdparty/googletest-master:gtest
-  -
-  # - buck targets
-  - buck build //:mainy --verbose 1 --no-cache
-  - buck run //:mainy x y z --no-cache
-  -
-  - buck test //:greety_test --verbose 1 --num-threads 1 --no-cache
+  - ls -al ${PWD}
+  - docker run --rm --workdir=/workspace --volume ${PWD}:/workspace praqma/native-buck:latest ./build.sh
+  - docker run --rm --workdir=/workspace --volume ${PWD}:/workspace praqma/native-buck:latest ./test.sh
