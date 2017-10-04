@@ -14,18 +14,18 @@ jobs:
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
             echo 'export WORKSPACE_DIR=/workspace' >> $BASH_ENV
-            echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
-            echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
+            # echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
+            # echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
       - run:
           name: Version
           command: |
             set -x
             cat /etc/*release
       - run:
-          name: Setup Google Test with Buck
+          name: Update Submodule(s)
           command: |
             git submodule update --init
-            cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
+            # cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
       - run:
           name: Build
           command: |
@@ -49,18 +49,18 @@ jobs:
           command: |
             echo 'export DEBIAN_FRONTEND=noninteractive' >> $BASH_ENV
             echo 'export WORKSPACE_DIR=/workspace' >> $BASH_ENV
-            echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
-            echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
+            # echo 'export THIRDPARTY_DIR=${PWD}/3rdparty' >> $BASH_ENV
+            # echo 'export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master' >> $BASH_ENV
       - run:
           name: Check Version
           command: |
             set -x
             cat /etc/*release
       - run:
-          name: Setup Google Test with Buck
+          name: Update Submodule(s)
           command: |
             git submodule update --init
-            cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
+            # cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
       - run:
           name: Test
           command: |

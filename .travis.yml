@@ -17,9 +17,9 @@ notifications:
 before_install:
   - git submodule update --init
   - docker pull praqma/native-buck:latest
-  - export THIRDPARTY_DIR=${PWD}/3rdparty
-  - export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master
-  - cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
+  # - export THIRDPARTY_DIR=${PWD}/3rdparty
+  # - export GOOGLETEST_DIR=${THIRDPARTY_DIR}/googletest-master
+  # - cp -v ${THIRDPARTY_DIR}/googletest_BUCK ${GOOGLETEST_DIR}/BUCK
 
 script:
   - ls -al ${PWD}
